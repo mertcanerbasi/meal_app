@@ -1,0 +1,54 @@
+{
+
+
+
+	"BaseWidget Page Create": {
+		"prefix": "bbaseWidget",
+		"body": [
+			"class $1Page extends BaseWidget<$1ViewModel> {",
+			"\tconst $1Page({ Key? key }) : super(key: key);",
+			"\t@override",
+			"\tWidget build(BuildContext context,$1ViewModel viewModel) {",
+			"\t\treturn Scaffold(appBar: AppBar(title:const Text('$1Page'),),);",
+			"\t}",
+			" }"
+		],
+		"description": "Page"
+	},
+	"ViewModel Create": {
+		"prefix": "vviewmModel",
+		"body": [
+			"import 'package:injectable/injectable.dart';",
+			"@injectable",
+			"class $1ViewModel extends BaseViewModel {}"
+		],
+		"description": "ViewModel"
+	},
+
+	"Getter Setter": {
+		"prefix": "ggetterSetter",
+		"body": [
+			"late $2 _$1;",
+			"$2 get $1 => _$1;",
+			"void set$1($2 $1){",
+			"  _$1 = $1;",
+			"  notifyListeners();",
+			"}"
+		],
+		"description": "ViewModel"
+	}
+,
+	"Getter Setter Nullable": {
+		"prefix": "ggetterSetter2",
+		"body": [
+			"$2? _$1;",
+			"$2? get $1 => _$1;",
+			"void set$1($2? $1){",
+			"  _$1 = $1;",
+			"  notifyListeners();",
+			"}"
+		],
+		"description": "ViewModel"
+	}
+	
+}
