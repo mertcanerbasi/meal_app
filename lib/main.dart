@@ -7,6 +7,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_app/core/cubits/app_cubit/app_cubit.dart';
+import 'package:meal_app/core/cubits/home_cubit/home_cubit.dart';
+import 'package:meal_app/core/cubits/profile_cubit/profile_cubit.dart';
 import 'package:meal_app/core/helpers/cache_helper.dart';
 import 'package:meal_app/core/shared/theme/app_theme.dart';
 import 'package:meal_app/core/shared/utils/bloc_observer.dart';
@@ -37,7 +39,7 @@ void main() async {
     if (uId != null) {
       startWidget = const HomeLayout();
     } else {
-      startWidget = const LoginPage();
+      startWidget = LoginPage();
     }
   } else {
     startWidget = OnBoardingPage();
@@ -102,8 +104,12 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AppCubit>(
-          create: (BuildContext context) => AppCubit(),
+        BlocProvider<AppCubit>(create: (BuildContext context) => AppCubit()),
+        BlocProvider<HomeCubit>(
+          create: (BuildContext context) => HomeCubit(),
+        ),
+        BlocProvider<ProfileCubit>(
+          create: (BuildContext context) => ProfileCubit(),
         ),
       ],
       child: GestureDetector(

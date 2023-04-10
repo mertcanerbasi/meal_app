@@ -3,6 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class TimestampConverter implements JsonConverter<DateTime, Timestamp> {
   const TimestampConverter();
@@ -49,4 +50,17 @@ void navigateAndFinish(context, widget) {
 
 extension BuildContextEx on BuildContext {
   AppLocalizations get l10n => AppLocalizations.of(this)!;
+}
+
+Future<T?> showActionMenu<T>(BuildContext context,
+    {required List<Widget> actions, bool useRootNavigator = true}) {
+  return showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white.withOpacity(0.8),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15.sp), topRight: Radius.circular(15.sp)),
+      ),
+      useRootNavigator: useRootNavigator,
+      builder: (c) => ListView(shrinkWrap: true, children: actions));
 }

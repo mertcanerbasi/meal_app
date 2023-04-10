@@ -17,7 +17,7 @@ class AppTheme {
     appBarTheme: const AppBarTheme(
       elevation: 0,
       titleSpacing: 20,
-      color: Colors.white,
+      backgroundColor: AppColors.backgroundColor,
       //backwardsCompatibility: false,
       // systemOverlayStyle: SystemUiOverlayStyle(
       //   statusBarColor: Colors.transparent,
@@ -36,7 +36,7 @@ class AppTheme {
       backgroundColor: Colors.white,
       type: BottomNavigationBarType.fixed,
       elevation: 18,
-      selectedItemColor: Colors.red,
+      selectedItemColor: AppColors.mainColor,
       unselectedItemColor: Colors.grey,
     ),
     textTheme: const TextTheme(
