@@ -17,7 +17,6 @@ class HomeLayout extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           var cubit = AppCubit.get(context);
-          cubit.getCurrentUser();
           return Scaffold(
             bottomNavigationBar: BottomNavigationBar(
               backgroundColor: AppColors.backgroundColor,
@@ -37,17 +36,10 @@ class HomeLayout extends StatelessWidget {
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(
-                    FontAwesomeIcons.list,
+                    Icons.favorite_outline,
                     size: 23.sp,
                   ),
-                  label: "Lists",
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    FontAwesomeIcons.calendar,
-                    size: 23.sp,
-                  ),
-                  label: "Meal Plan",
+                  label: "Favorites",
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(

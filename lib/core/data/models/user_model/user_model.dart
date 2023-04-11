@@ -12,6 +12,7 @@ class UserModel {
   @TimestampConverter()
   DateTime? createdAt;
   String? photoUrl;
+  List<String> favoriteMealsList;
 
   UserModel({
     required this.uId,
@@ -19,6 +20,7 @@ class UserModel {
     required this.email,
     required this.createdAt,
     required this.photoUrl,
+    required this.favoriteMealsList,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {

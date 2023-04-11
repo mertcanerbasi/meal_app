@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_app/core/cubits/profile_cubit/profile_states.dart';
 import 'package:meal_app/core/data/models/meal_model/meal_model.dart';
+import 'package:meal_app/core/data/models/user_model/user_model.dart';
 import 'package:meal_app/core/shared/utils/constants.dart';
 import 'package:uuid/uuid.dart';
 
@@ -10,13 +11,17 @@ import '../../data/models/meal_type_model/meal_type_model.dart';
 class ProfileCubit extends Cubit<ProfileStates> {
   ProfileCubit() : super(ProfileInitialState());
 
+  static ProfileCubit get(context) => BlocProvider.of(context);
+
+  UserModel? currentUser;
+
   void createMeal() async {
     emit(ProfileLoadingState());
     String id = const Uuid().v4();
     MealModel mealModel = MealModel(
         name: "Grilled Chicken Wrap",
         chefUid: uId!,
-        rating: 0,
+        likes: 0,
         minutes: 25,
         mealTypes: MealType.lunch.name,
         mealId: id,
@@ -39,9 +44,24 @@ class ProfileCubit extends Cubit<ProfileStates> {
         .doc(id)
         .set(mealModel.toJson())
         .then((value) {
-      emit(ProfileSuccessState());
+      emit(ProfileSuccessState(currentUser: currentUser!));
     }).catchError((error) {
       emit(ProfileErrorState(error.toString()));
+    });
+  }
+
+  void getCurrentUser({required String uId}) async {
+    emit(ProfileLoadingState());
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .get()
+        .then((value) {
+      currentUser = UserModel.fromJson(value.data()!);
+      emit(ProfileSuccessState(currentUser: currentUser!));
+    }).catchError((onError) {
+      emit(ProfileErrorState(onError.toString()));
     });
   }
 }

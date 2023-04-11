@@ -13,6 +13,9 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       createdAt: _$JsonConverterFromJson<Timestamp, DateTime>(
           json['createdAt'], const TimestampConverter().fromJson),
       photoUrl: json['photoUrl'] as String?,
+      favoriteMealsList: (json['favoriteMealsList'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
@@ -22,6 +25,7 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'createdAt': _$JsonConverterToJson<Timestamp, DateTime>(
           instance.createdAt, const TimestampConverter().toJson),
       'photoUrl': instance.photoUrl,
+      'favoriteMealsList': instance.favoriteMealsList,
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(

@@ -44,6 +44,7 @@ class SignUpCubit extends Cubit<SignUpStates> {
       photoUrl: null,
       email: email,
       createdAt: DateTime.now(),
+      favoriteMealsList: [],
     );
 
     emit(CreateUserLoadingsState());

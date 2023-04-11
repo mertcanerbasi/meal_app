@@ -217,10 +217,7 @@ class LoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-        child: CircularProgressIndicator(
-      color: AppColors.mainColor,
-    ));
+    return Center(child: Image.asset("assets/images/loading.gif"));
   }
 }
 
@@ -257,6 +254,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double? elevation;
   final Color? iconColor;
   final BuildContext context;
+  final List<Widget>? actions;
 
   const DefaultAppBar({
     Key? key,
@@ -266,18 +264,20 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.elevation,
     this.iconColor,
     required this.context,
+    this.actions,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      iconTheme: const IconThemeData(color: AppColors.mainColor),
-      backgroundColor: backgroundColor,
+      iconTheme: const IconThemeData(color: AppColors.primaryFontColor),
+      backgroundColor: backgroundColor ?? AppColors.backgroundColor,
       elevation: elevation,
       title: Text(
         title,
-        style: TextStyle(fontSize: 18.sp, color: AppColors.mainColor),
+        style: TextStyle(fontSize: 18.sp, color: AppColors.primaryFontColor),
       ),
+      actions: actions,
     );
   }
 

@@ -1,7 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:meal_app/core/cubits/app_cubit/app_cubit.dart';
 import 'package:meal_app/core/cubits/home_cubit/home_cubit.dart';
 import 'package:meal_app/core/cubits/home_cubit/home_states.dart';
 import 'package:meal_app/core/data/models/meal_model/meal_model.dart';
@@ -9,6 +10,7 @@ import 'package:meal_app/core/data/models/meal_type_model/meal_type_model.dart';
 import 'package:meal_app/core/shared/theme/app_colors.dart';
 import 'package:meal_app/core/shared/utils/utils.dart';
 import 'package:meal_app/core/shared/widgets/app_widgets.dart';
+import 'package:meal_app/presentation/pages/meal_details_page/meal_details_page.dart';
 import 'package:meal_app/presentation/pages/profile_page/profile_page.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -112,9 +114,9 @@ class WelcomeHomeWidget extends StatelessWidget {
             child: CircleAvatar(
               radius: 3.h,
               backgroundColor: AppColors.mainColor,
-              backgroundImage: (AppCubit.get(context).currentUser != null &&
-                      AppCubit.get(context).currentUser!.photoURL != null)
-                  ? NetworkImage(AppCubit.get(context).currentUser!.photoURL!)
+              backgroundImage: (FirebaseAuth.instance.currentUser != null &&
+                      FirebaseAuth.instance.currentUser!.photoURL != null)
+                  ? NetworkImage(FirebaseAuth.instance.currentUser!.photoURL!)
                   : null,
             ),
           ),
@@ -189,78 +191,112 @@ class FoodSuggestionItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 30.h,
-      decoration: BoxDecoration(
-        image: const DecorationImage(
-            image: AssetImage("assets/images/placeholderMealImage.jpeg"),
-            fit: BoxFit.cover),
-        borderRadius: BorderRadius.circular(10.sp),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(2.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return GestureDetector(
+      onTap: () {
+        navigateTo(context, MealDetailsPage(mealModel: mealModel),
+            isFullScreen: true);
+      },
+      child: Container(
+        height: 25.h,
+        clipBehavior: Clip.hardEdge,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.sp),
+        ),
+        child: Stack(
           children: [
-            Row(
-              children: [
-                Text(
-                  "Mertcan Erbaşı",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.sp,
-                  ),
-                ),
-                const Spacer(),
-                IconButton(
-                  onPressed: () {
-                    //TODO Favorite
-                  },
-                  icon: const Icon(
-                    Icons.star_outline,
-                    color: Colors.white,
-                  ),
-                ),
-                SizedBox(width: 2.w),
-                Text(
-                  mealModel.rating.toStringAsFixed(1),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.sp,
-                  ),
-                ),
-              ],
+            CachedNetworkImage(
+              width: 100.w,
+              height: 25.h,
+              fit: BoxFit.cover,
+              imageUrl: mealModel.image,
+              errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
-            const Spacer(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  mealModel.name,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 1.h),
-                Row(
-                  children: [
-                    FaIcon(
-                      FontAwesomeIcons.clock,
-                      color: Colors.white,
-                      size: 16.sp,
-                    ),
-                    SizedBox(width: 2.w),
-                    Text(
-                      "${mealModel.minutes} min",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.sp,
+            Padding(
+              padding: EdgeInsets.all(2.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(10.sp),
+                        decoration: BoxDecoration(
+                          color: AppColors.mainColor.shade500,
+                          borderRadius: BorderRadius.circular(10.sp),
+                        ),
+                        child: Text(
+                          "Mertcan Erbaşı",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.sp,
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      const Spacer(),
+                      Container(
+                        padding: EdgeInsets.all(10.sp),
+                        decoration: BoxDecoration(
+                          color: AppColors.mainColor.shade500,
+                          borderRadius: BorderRadius.circular(10.sp),
+                        ),
+                        child: Text(
+                          "${mealModel.likes.toString()} Likes",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.sp,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(10.sp),
+                        decoration: BoxDecoration(
+                          color: AppColors.mainColor.shade500,
+                          borderRadius: BorderRadius.circular(10.sp),
+                        ),
+                        child: Text(
+                          mealModel.name,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(height: 1.h),
+                      Container(
+                        padding: EdgeInsets.all(10.sp),
+                        decoration: BoxDecoration(
+                          color: AppColors.mainColor.shade500,
+                          borderRadius: BorderRadius.circular(10.sp),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            FaIcon(
+                              FontAwesomeIcons.clock,
+                              color: Colors.white,
+                              size: 16.sp,
+                            ),
+                            SizedBox(width: 2.w),
+                            Text(
+                              "${mealModel.minutes} min",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.sp,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),

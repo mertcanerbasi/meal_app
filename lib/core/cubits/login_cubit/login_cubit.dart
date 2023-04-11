@@ -17,7 +17,8 @@ class LoginCubit extends Cubit<LoginStates> {
         name: user.user!.displayName,
         email: user.user!.email,
         photoUrl: user.user!.photoURL,
-        createdAt: DateTime.now());
+        createdAt: DateTime.now(),
+        favoriteMealsList: []);
 
     emit(CreateUserLoadingsState());
 

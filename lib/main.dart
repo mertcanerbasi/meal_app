@@ -7,7 +7,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_app/core/cubits/app_cubit/app_cubit.dart';
+import 'package:meal_app/core/cubits/favorites_cubit/favorites_cubit.dart';
 import 'package:meal_app/core/cubits/home_cubit/home_cubit.dart';
+import 'package:meal_app/core/cubits/meal_details_cubit/meail_details_cubit.dart';
 import 'package:meal_app/core/cubits/profile_cubit/profile_cubit.dart';
 import 'package:meal_app/core/helpers/cache_helper.dart';
 import 'package:meal_app/core/shared/theme/app_theme.dart';
@@ -110,6 +112,12 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider<ProfileCubit>(
           create: (BuildContext context) => ProfileCubit(),
+        ),
+        BlocProvider<MealDetailsCubit>(
+          create: (BuildContext context) => MealDetailsCubit(),
+        ),
+        BlocProvider<FavoritesCubit>(
+          create: (BuildContext context) => FavoritesCubit(),
         ),
       ],
       child: GestureDetector(

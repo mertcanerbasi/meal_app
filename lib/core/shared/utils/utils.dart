@@ -31,7 +31,8 @@ extension GroupBy<T> on List<T> {
   }
 }
 
-void navigateTo(context, widget, {bool isFullScreen = false}) => Navigator.push(
+Future navigateTo(context, widget, {bool isFullScreen = false}) =>
+    Navigator.push(
       context,
       PageRouteBuilder(
         fullscreenDialog: isFullScreen,

@@ -6,7 +6,7 @@ part 'meal_model.g.dart';
 class MealModel {
   String name;
   String chefUid;
-  double rating;
+  int likes;
   int minutes;
   String mealTypes;
   String mealId;
@@ -17,7 +17,7 @@ class MealModel {
   MealModel({
     required this.name,
     required this.chefUid,
-    required this.rating,
+    required this.likes,
     required this.minutes,
     required this.mealTypes,
     required this.mealId,

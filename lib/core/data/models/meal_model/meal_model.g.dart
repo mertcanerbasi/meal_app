@@ -9,7 +9,7 @@ part of 'meal_model.dart';
 MealModel _$MealModelFromJson(Map<String, dynamic> json) => MealModel(
       name: json['name'] as String,
       chefUid: json['chefUid'] as String,
-      rating: (json['rating'] as num).toDouble(),
+      likes: json['likes'] as int,
       minutes: json['minutes'] as int,
       mealTypes: json['mealTypes'] as String,
       mealId: json['mealId'] as String,
@@ -23,7 +23,7 @@ MealModel _$MealModelFromJson(Map<String, dynamic> json) => MealModel(
 Map<String, dynamic> _$MealModelToJson(MealModel instance) => <String, dynamic>{
       'name': instance.name,
       'chefUid': instance.chefUid,
-      'rating': instance.rating,
+      'likes': instance.likes,
       'minutes': instance.minutes,
       'mealTypes': instance.mealTypes,
       'mealId': instance.mealId,

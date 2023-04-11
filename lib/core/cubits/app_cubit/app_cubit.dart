@@ -2,9 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_app/core/cubits/app_cubit/app_states.dart';
-import 'package:meal_app/core/shared/utils/logger.dart';
 import 'package:meal_app/core/shared/utils/utils.dart';
-import 'package:meal_app/presentation/pages/deneme_page/deneme_page.dart';
+import 'package:meal_app/presentation/pages/favorites_page/favorites_page.dart';
 import 'package:meal_app/presentation/pages/home_page/home_page.dart';
 import 'package:meal_app/presentation/pages/login/login_page.dart';
 import 'package:meal_app/presentation/pages/settings_page/settings_page.dart';
@@ -20,8 +19,7 @@ class AppCubit extends Cubit<AppStates> {
 
   final List<Widget> pages = [
     HomePage(),
-    const DenemePage(),
-    const DenemePage(),
+    const FavoritesPage(),
     const SettingsPage(),
   ];
 
@@ -38,13 +36,5 @@ class AppCubit extends Cubit<AppStates> {
         });
       }
     });
-  }
-
-  User? currentUser;
-
-  void getCurrentUser() {
-    currentUser = FirebaseAuth.instance.currentUser;
-
-    Log.v("User: ${currentUser!.email}");
   }
 }
