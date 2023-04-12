@@ -54,10 +54,12 @@ extension BuildContextEx on BuildContext {
 }
 
 Future<T?> showActionMenu<T>(BuildContext context,
-    {required List<Widget> actions, bool useRootNavigator = true}) {
+    {required List<Widget> actions,
+    bool useRootNavigator = true,
+    Color? color}) {
   return showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.white.withOpacity(0.8),
+      backgroundColor: color ?? Colors.white.withOpacity(0.8),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(15.sp), topRight: Radius.circular(15.sp)),

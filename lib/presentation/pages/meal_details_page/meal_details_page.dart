@@ -72,7 +72,7 @@ class MealDetailsPage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Rating",
+                                  "Likes",
                                   style: TextStyle(
                                       fontSize: 17.sp,
                                       fontWeight: FontWeight.bold),

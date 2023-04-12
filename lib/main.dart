@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_app/core/cubits/app_cubit/app_cubit.dart';
+import 'package:meal_app/core/cubits/create_recipe_cubit/create_recipe_cubit.dart';
 import 'package:meal_app/core/cubits/favorites_cubit/favorites_cubit.dart';
 import 'package:meal_app/core/cubits/home_cubit/home_cubit.dart';
 import 'package:meal_app/core/cubits/meal_details_cubit/meail_details_cubit.dart';
@@ -118,6 +119,9 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider<FavoritesCubit>(
           create: (BuildContext context) => FavoritesCubit(),
+        ),
+        BlocProvider<CreateRecipeCubit>(
+          create: (BuildContext context) => CreateRecipeCubit(),
         ),
       ],
       child: GestureDetector(

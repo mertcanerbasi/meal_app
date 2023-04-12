@@ -1,12 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_app/core/cubits/profile_cubit/profile_states.dart';
 import 'package:meal_app/core/data/models/meal_model/meal_model.dart';
 import 'package:meal_app/core/data/models/user_model/user_model.dart';
-import 'package:meal_app/core/shared/utils/constants.dart';
-import 'package:uuid/uuid.dart';
-
-import '../../data/models/meal_type_model/meal_type_model.dart';
 
 class ProfileCubit extends Cubit<ProfileStates> {
   ProfileCubit() : super(ProfileInitialState());
@@ -15,40 +12,11 @@ class ProfileCubit extends Cubit<ProfileStates> {
 
   UserModel? currentUser;
 
-  void createMeal() async {
-    emit(ProfileLoadingState());
-    String id = const Uuid().v4();
-    MealModel mealModel = MealModel(
-        name: "Grilled Chicken Wrap",
-        chefUid: uId!,
-        likes: 0,
-        minutes: 25,
-        mealTypes: MealType.lunch.name,
-        mealId: id,
-        ingredients: [
-          "Grilled chicken breast",
-          "Whole wheat tortilla wrap",
-          "Lettuce",
-          "Tomato",
-          "Avacado",
-          "Cucumber",
-          "Onion",
-          "Garlic sauce"
-        ],
-        tags: ["Healthy", "Low carb", "Low fat", "Low calorie"],
-        image:
-            "https://us.123rf.com/450wm/dml5050/dml50502101/dml5050210100054/162107892-classic-tortilla-wrap-roll-with-grilled-chicken-and-vegetables-tomato-lettuce-with-steam-smoke-on.jpg?ver=6");
+  int? get numberOfFavoriteFoods => currentUser?.favoriteMealsList.length;
 
-    await FirebaseFirestore.instance
-        .collection('meals')
-        .doc(id)
-        .set(mealModel.toJson())
-        .then((value) {
-      emit(ProfileSuccessState(currentUser: currentUser!));
-    }).catchError((error) {
-      emit(ProfileErrorState(error.toString()));
-    });
-  }
+  List<MealModel> numberOfUsersMeals = [];
+
+  int? get numberOfUsersMealsLength => numberOfUsersMeals.length;
 
   void getCurrentUser({required String uId}) async {
     emit(ProfileLoadingState());
@@ -59,6 +27,23 @@ class ProfileCubit extends Cubit<ProfileStates> {
         .get()
         .then((value) {
       currentUser = UserModel.fromJson(value.data()!);
+      emit(ProfileSuccessState(currentUser: currentUser!));
+    }).catchError((onError) {
+      emit(ProfileErrorState(onError.toString()));
+    });
+  }
+
+  void getAllMealsWithCurrentUserId() async {
+    emit(ProfileLoadingState());
+    numberOfUsersMeals.clear();
+    await FirebaseFirestore.instance
+        .collection('meals')
+        .where('chefUid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then((value) {
+      for (var element in value.docs) {
+        numberOfUsersMeals.add(MealModel.fromJson(element.data()));
+      }
       emit(ProfileSuccessState(currentUser: currentUser!));
     }).catchError((onError) {
       emit(ProfileErrorState(onError.toString()));

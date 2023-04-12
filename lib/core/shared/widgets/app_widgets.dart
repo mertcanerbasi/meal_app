@@ -109,6 +109,7 @@ class DefaultTextFormField extends StatelessWidget {
       controller: controller,
       keyboardType: type,
       obscureText: isPassword,
+      cursorColor: AppColors.mainColor,
       decoration: InputDecoration(
         hintText: hintText,
         focusedBorder: OutlineInputBorder(
