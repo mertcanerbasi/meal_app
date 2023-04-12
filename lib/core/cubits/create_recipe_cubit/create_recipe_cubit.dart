@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -18,28 +19,33 @@ class CreateRecipeCubit extends Cubit<CreateRecipeStates> {
 
   void createRecipe({required String mealName}) async {
     emit(CreateRecipeLoadingState());
+
     String id = const Uuid().v4();
-    MealModel mealModel = MealModel(
-        name: mealName,
-        chefUid: FirebaseAuth.instance.currentUser!.uid,
-        likes: 0,
-        minutes: 35,
-        mealTypes: mealType.name,
-        mealId: id,
-        ingredients: ingredientsList,
-        tags: tags,
-        image:
-            "https://australianmushrooms.com.au/wp-content/uploads/2019/06/Herb-and-Garlic-Mushrooms-with-minute-steak03-2000x2000.jpg");
-    await FirebaseFirestore.instance
-        .collection('meals')
-        .doc(id)
-        .set(mealModel.toJson())
-        .then((value) {
-      ingredientsList.clear();
-      tags.clear();
-      emit(CreateRecipeSuccessState());
-    }).catchError((error) {
-      emit(CreateRecipeErrorState(error: error.toString()));
+    Reference ref = FirebaseStorage.instance.ref().child("meals/$id");
+    UploadTask uploadTask = ref.putFile(image!);
+    await uploadTask.whenComplete(() async {
+      String imageUrl = await ref.getDownloadURL();
+      MealModel mealModel = MealModel(
+          name: mealName,
+          chefUid: FirebaseAuth.instance.currentUser!.uid,
+          likes: 0,
+          minutes: 35,
+          mealTypes: mealType.name,
+          mealId: id,
+          ingredients: ingredientsList,
+          tags: tags,
+          image: imageUrl);
+      await FirebaseFirestore.instance
+          .collection('meals')
+          .doc(id)
+          .set(mealModel.toJson())
+          .then((value) {
+        ingredientsList.clear();
+        tags.clear();
+        emit(CreateRecipeSuccessState());
+      }).catchError((error) {
+        emit(CreateRecipeErrorState(error: error.toString()));
+      });
     });
   }
 
@@ -103,7 +109,7 @@ class CreateRecipeCubit extends Cubit<CreateRecipeStates> {
     final pickedImage = await picker.pickImage(
         source: ImageSource.gallery,
         maxHeight: 400,
-        imageQuality: 60,
+        imageQuality: 80,
         maxWidth: 400);
     if (pickedImage != null) {
       CroppedFile? croppedFile = await ImageCropper().cropImage(
