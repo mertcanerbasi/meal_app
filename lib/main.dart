@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:meal_app/core/cubits/app_cubit/app_cubit.dart';
 import 'package:meal_app/core/cubits/create_recipe_cubit/create_recipe_cubit.dart';
 import 'package:meal_app/core/cubits/favorites_cubit/favorites_cubit.dart';
@@ -24,7 +25,7 @@ import 'presentation/layouts/home_layout/home_layout.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  //MobileAds.instance.initialize();
+  MobileAds.instance.initialize();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   //Transparent Statusbar

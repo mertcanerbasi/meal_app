@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_app/core/cubits/home_cubit/home_states.dart';
 import 'package:meal_app/core/data/models/meal_model/meal_model.dart';
 import 'package:meal_app/core/data/models/meal_type_model/meal_type_model.dart';
+import 'package:meal_app/core/data/services/google_ads.dart';
 
 class HomeCubit extends Cubit<HomeStates> {
   HomeCubit() : super(HomeInitialState());
@@ -13,6 +14,8 @@ class HomeCubit extends Cubit<HomeStates> {
     MealTypeModel(label: MealType.snacks.name, isSelected: false),
     MealTypeModel(label: MealType.dinner.name, isSelected: false),
   ];
+
+  GoogleAds googleAds = GoogleAds();
 
   List<MealModel> mealsList = [];
   MealType currentMealType = MealType.lunch;
@@ -42,7 +45,12 @@ class HomeCubit extends Cubit<HomeStates> {
   void getMealsList() async {
     emit(HomeLoadingState());
     mealsList.clear();
-    await FirebaseFirestore.instance.collection('meals').get().then((value) {
+    await FirebaseFirestore.instance
+        .collection('meals')
+        .orderBy("likes", descending: true)
+        .limit(100)
+        .get()
+        .then((value) {
       for (var element in value.docs) {
         mealsList.add(MealModel.fromJson(element.data()));
       }

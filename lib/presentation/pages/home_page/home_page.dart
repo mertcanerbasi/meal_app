@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:meal_app/core/cubits/home_cubit/home_cubit.dart';
 import 'package:meal_app/core/cubits/home_cubit/home_states.dart';
 import 'package:meal_app/core/data/models/meal_model/meal_model.dart';
@@ -22,6 +23,8 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     var cubit = HomeCubit.get(context);
     cubit.getMealsList();
+    cubit.googleAds.loadBannerAd();
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -47,7 +50,9 @@ class HomePage extends StatelessWidget {
                         controller: controller,
                         type: TextInputType.name),
                     SizedBox(height: 2.h),
-                    const SuggestionVideoWidget(),
+                    SuggestionVideoWidget(
+                      bannerAd: cubit.googleAds.bannerAd,
+                    ),
                     SizedBox(height: 2.h),
                     HorizontalChipListWidget(
                         mealTypesList: cubit.mealTypesList),
@@ -127,17 +132,23 @@ class WelcomeHomeWidget extends StatelessWidget {
 }
 
 class SuggestionVideoWidget extends StatelessWidget {
-  const SuggestionVideoWidget({super.key});
+  final BannerAd? bannerAd;
+  const SuggestionVideoWidget({super.key, this.bannerAd});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 15.h,
-      decoration: BoxDecoration(
-        color: AppColors.mainColor,
-        borderRadius: BorderRadius.circular(10.sp),
-      ),
-    );
+    if (bannerAd != null) {
+      return Container(
+        height: 15.h,
+        decoration: BoxDecoration(
+          color: AppColors.backgroundColor,
+          borderRadius: BorderRadius.circular(10.sp),
+        ),
+        child: AdWidget(ad: bannerAd!),
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 }
 
