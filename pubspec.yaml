@@ -34,6 +34,8 @@ dependencies:
   geolocator: ^9.0.2
   google_mobile_ads: ^2.4.0
   google_sign_in: ^6.0.2
+  image_cropper: ^3.0.2
+  image_picker: ^0.8.7+2
   in_app_review: ^2.0.6
   injectable: ^2.1.1
   intl: ^0.17.0

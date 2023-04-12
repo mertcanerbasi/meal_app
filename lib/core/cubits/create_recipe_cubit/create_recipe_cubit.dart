@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:meal_app/core/cubits/create_recipe_cubit/create_recipe_states.dart';
 import 'package:meal_app/core/data/models/meal_model/meal_model.dart';
 import 'package:meal_app/core/data/models/meal_type_model/meal_type_model.dart';
+import 'package:meal_app/core/shared/theme/app_colors.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateRecipeCubit extends Cubit<CreateRecipeStates> {
@@ -41,6 +46,7 @@ class CreateRecipeCubit extends Cubit<CreateRecipeStates> {
   void clearState() {
     ingredientsList.clear();
     tags.clear();
+    image = null;
     emit(CreateRecipeInitialState());
   }
 
@@ -88,5 +94,48 @@ class CreateRecipeCubit extends Cubit<CreateRecipeStates> {
   void removeTag(int index) {
     tags.removeAt(index);
     emit(CreateRecipeInitialState());
+  }
+
+  File? image;
+  var picker = ImagePicker();
+
+  Future getImage() async {
+    final pickedImage = await picker.pickImage(
+        source: ImageSource.gallery,
+        maxHeight: 400,
+        imageQuality: 60,
+        maxWidth: 400);
+    if (pickedImage != null) {
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: pickedImage.path,
+        aspectRatio: const CropAspectRatio(ratioX: 3, ratioY: 2),
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Cropper',
+              toolbarColor: AppColors.mainColor,
+              toolbarWidgetColor: AppColors.backgroundColor,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false),
+          IOSUiSettings(
+            title: 'Cropper',
+          ),
+        ],
+      );
+
+      if (croppedFile != null) {
+        image = File(croppedFile.path);
+      }
+
+      emit(CreateRecipeInitialState());
+    } else {
+      emit(CreateRecipeInitialState());
+    }
   }
 }

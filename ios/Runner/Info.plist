@@ -47,6 +47,10 @@
 	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Yemek fotoğrafı çekmek için ihtiyaç var.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Galeriden yemek fotoğrafı yükleyebilmek için ihtiyaç var.</string>
 	<key>CFBundleURLTypes</key>
 		<array>
 			<dict>

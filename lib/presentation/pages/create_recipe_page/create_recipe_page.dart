@@ -16,6 +16,7 @@ class CreateReceipePage extends StatelessWidget {
     TextEditingController nameController = TextEditingController();
     TextEditingController indgredientsController = TextEditingController();
     TextEditingController tagController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
     var cubit = CreateRecipeCubit.get(context);
     return WillPopScope(
       onWillPop: () {
@@ -26,6 +27,19 @@ class CreateReceipePage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor.withOpacity(0.95),
         appBar: DefaultAppBar(title: context.l10n.addRecipe, context: context),
+        floatingActionButton: FloatingActionButton.extended(
+            backgroundColor: AppColors.mainColor,
+            onPressed: () {
+              if (formKey.currentState?.validate() == true) {
+                cubit.createRecipe(mealName: nameController.text);
+              }
+            },
+            label: const Text(
+              "Create Recipe",
+              style: TextStyle(
+                  color: AppColors.backgroundColor,
+                  fontWeight: FontWeight.bold),
+            )),
         body: SafeArea(
           child: Padding(
             padding: paddingAll,
@@ -40,112 +54,150 @@ class CreateReceipePage extends StatelessWidget {
                 if (state is CreateRecipeErrorState) {
                   return BuildErrorWidget(error: state.error);
                 } else if (state is CreateRecipeInitialState) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      DefaultTextFormField(
-                          context: context,
-                          hintText: "Meal Name",
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Please enter a name";
-                            } else if (value.length < 6) {
-                              return "Name must be at least 6 characters";
-                            }
-                            return null;
-                          },
-                          controller: nameController,
-                          type: TextInputType.name),
-                      SizedBox(
-                        height: 3.h,
-                      ),
-                      MealTypeSelectorWidget(
-                        cubit: cubit,
-                        mealType: cubit.mealType.name,
-                      ),
-                      SizedBox(
-                        height: 3.h,
-                      ),
-                      IngredientsTagsSelectorWidget(
-                        title: "Ingredients",
-                        onPressed: () {
-                          cubit.addIndgredient(indgredientsController.text);
-                          indgredientsController.clear();
-                        },
-                        ingredientController: indgredientsController,
-                      ),
-                      SizedBox(
-                        height: 1.h,
-                      ),
-                      SizedBox(
-                        height: 5.h,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: cubit.ingredientsList.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: EdgeInsets.only(right: 1.w),
-                              child: Chip(
-                                onDeleted: () {
-                                  cubit.removeIngredient(index);
-                                },
-                                deleteIconColor: AppColors.mainColor,
-                                label: Text(
-                                  cubit.ingredientsList[index],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15.sp),
-                                ),
-                              ),
-                            );
-                          },
+                  return Form(
+                    key: formKey,
+                    child: ListView(
+                      physics: const ClampingScrollPhysics(),
+                      children: [
+                        DefaultTextFormField(
+                            context: context,
+                            hintText: "Meal Name",
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter a name";
+                              } else if (value.length < 6) {
+                                return "Name must be at least 6 characters";
+                              }
+                              return null;
+                            },
+                            controller: nameController,
+                            type: TextInputType.name),
+                        SizedBox(
+                          height: 3.h,
                         ),
-                      ),
-                      SizedBox(
-                        height: 3.h,
-                      ),
-                      IngredientsTagsSelectorWidget(
-                        title: "Tags",
-                        onPressed: () {
-                          cubit.addTag(tagController.text);
-                          tagController.clear();
-                        },
-                        ingredientController: tagController,
-                      ),
-                      SizedBox(
-                        height: 1.h,
-                      ),
-                      SizedBox(
-                        height: 5.h,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: cubit.tags.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: EdgeInsets.only(right: 1.w),
-                              child: Chip(
-                                onDeleted: () {
-                                  cubit.removeTag(index);
-                                },
-                                deleteIconColor: AppColors.mainColor,
-                                label: Text(
-                                  cubit.tags[index],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15.sp),
-                                ),
-                              ),
-                            );
-                          },
+                        MealTypeSelectorWidget(
+                          cubit: cubit,
+                          mealType: cubit.mealType.name,
                         ),
-                      ),
-                      const Spacer(),
-                      DefaultButton(
-                          title: "Create Recipe",
+                        SizedBox(
+                          height: 3.h,
+                        ),
+                        IngredientsTagsSelectorWidget(
+                          title: "Ingredients",
                           onPressed: () {
-                            cubit.createRecipe(mealName: nameController.text);
-                          })
-                    ],
+                            cubit.addIndgredient(indgredientsController.text);
+                            indgredientsController.clear();
+                          },
+                          ingredientController: indgredientsController,
+                        ),
+                        SizedBox(
+                          height: 1.h,
+                        ),
+                        SizedBox(
+                          height: 5.h,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: cubit.ingredientsList.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.only(right: 1.w),
+                                child: Chip(
+                                  onDeleted: () {
+                                    cubit.removeIngredient(index);
+                                  },
+                                  deleteIconColor: AppColors.mainColor,
+                                  label: Text(
+                                    cubit.ingredientsList[index],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15.sp),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 3.h,
+                        ),
+                        IngredientsTagsSelectorWidget(
+                          title: "Tags",
+                          onPressed: () {
+                            cubit.addTag(tagController.text);
+                            tagController.clear();
+                          },
+                          ingredientController: tagController,
+                        ),
+                        SizedBox(
+                          height: 1.h,
+                        ),
+                        SizedBox(
+                          height: 5.h,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: cubit.tags.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.only(right: 1.w),
+                                child: Chip(
+                                  onDeleted: () {
+                                    cubit.removeTag(index);
+                                  },
+                                  deleteIconColor: AppColors.mainColor,
+                                  label: Text(
+                                    cubit.tags[index],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15.sp),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 3.h,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "Upload Image",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.sp,
+                              ),
+                            ),
+                            const Spacer(),
+                            TextButton.icon(
+                                onPressed: () async {
+                                  await cubit.getImage();
+                                },
+                                icon: const Icon(
+                                  Icons.photo,
+                                  color: AppColors.mainColor,
+                                ),
+                                label: const Text(
+                                  "Upload",
+                                  style: TextStyle(color: AppColors.mainColor),
+                                ))
+                          ],
+                        ),
+                        SizedBox(
+                          height: 1.h,
+                        ),
+                        if (cubit.image != null)
+                          Container(
+                            height: 30.h,
+                            clipBehavior: Clip.hardEdge,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25.sp)),
+                            child: Image.file(
+                              cubit.image!,
+                              fit: BoxFit.fitHeight,
+                            ),
+                          ),
+                      ],
+                    ),
                   );
                 } else {
                   return const LoadingWidget();
