@@ -50,7 +50,7 @@ class HomePage extends StatelessWidget {
                         controller: controller,
                         type: TextInputType.name),
                     SizedBox(height: 2.h),
-                    SuggestionVideoWidget(
+                    BannerAdWidget(
                       bannerAd: cubit.googleAds.bannerAd,
                     ),
                     SizedBox(height: 2.h),
@@ -131,9 +131,9 @@ class WelcomeHomeWidget extends StatelessWidget {
   }
 }
 
-class SuggestionVideoWidget extends StatelessWidget {
+class BannerAdWidget extends StatelessWidget {
   final BannerAd? bannerAd;
-  const SuggestionVideoWidget({super.key, this.bannerAd});
+  const BannerAdWidget({super.key, this.bannerAd});
 
   @override
   Widget build(BuildContext context) {
