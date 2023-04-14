@@ -13,6 +13,7 @@ import 'package:meal_app/core/cubits/favorites_cubit/favorites_cubit.dart';
 import 'package:meal_app/core/cubits/home_cubit/home_cubit.dart';
 import 'package:meal_app/core/cubits/meal_details_cubit/meail_details_cubit.dart';
 import 'package:meal_app/core/cubits/profile_cubit/profile_cubit.dart';
+import 'package:meal_app/core/cubits/search_cubit/search_cubit.dart';
 import 'package:meal_app/core/helpers/cache_helper.dart';
 import 'package:meal_app/core/shared/theme/app_theme.dart';
 import 'package:meal_app/core/shared/utils/bloc_observer.dart';
@@ -123,6 +124,9 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider<CreateRecipeCubit>(
           create: (BuildContext context) => CreateRecipeCubit(),
+        ),
+        BlocProvider<SearchCubit>(
+          create: (BuildContext context) => SearchCubit(),
         ),
       ],
       child: GestureDetector(

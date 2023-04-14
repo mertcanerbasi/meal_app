@@ -17,7 +17,7 @@ class CreateRecipeCubit extends Cubit<CreateRecipeStates> {
 
   static CreateRecipeCubit get(context) => BlocProvider.of(context);
 
-  void createRecipe({required String mealName}) async {
+  void createRecipe({required String mealName, required int minutes}) async {
     emit(CreateRecipeLoadingState());
 
     String id = const Uuid().v4();
@@ -29,7 +29,7 @@ class CreateRecipeCubit extends Cubit<CreateRecipeStates> {
           name: mealName,
           chefUid: FirebaseAuth.instance.currentUser!.uid,
           likes: 0,
-          minutes: 35,
+          minutes: minutes,
           mealTypes: mealType.name,
           mealId: id,
           ingredients: ingredientsList,

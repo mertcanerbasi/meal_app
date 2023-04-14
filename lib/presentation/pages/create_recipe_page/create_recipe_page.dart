@@ -16,6 +16,7 @@ class CreateReceipePage extends StatelessWidget {
     TextEditingController nameController = TextEditingController();
     TextEditingController indgredientsController = TextEditingController();
     TextEditingController tagController = TextEditingController();
+    TextEditingController minutesController = TextEditingController();
     final formKey = GlobalKey<FormState>();
     var cubit = CreateRecipeCubit.get(context);
     return WillPopScope(
@@ -31,7 +32,10 @@ class CreateReceipePage extends StatelessWidget {
             backgroundColor: AppColors.mainColor,
             onPressed: () {
               if (formKey.currentState?.validate() == true) {
-                cubit.createRecipe(mealName: nameController.text);
+                //TODO alan kontrolleri yapılacak
+                cubit.createRecipe(
+                    mealName: nameController.text,
+                    minutes: int.tryParse(minutesController.text) ?? 0);
               }
             },
             label: const Text(
@@ -72,6 +76,37 @@ class CreateReceipePage extends StatelessWidget {
                             },
                             controller: nameController,
                             type: TextInputType.name),
+                        SizedBox(
+                          height: 3.h,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "Required Time",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.sp,
+                              ),
+                            ),
+                            const Spacer(),
+                            SizedBox(
+                              width: 50.w,
+                              child: DefaultTextFormField(
+                                  context: context,
+                                  hintText: "Minutes",
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        value == "0") {
+                                      return "Please enter minutes";
+                                    }
+                                    return null;
+                                  },
+                                  controller: minutesController,
+                                  type: TextInputType.number),
+                            ),
+                          ],
+                        ),
                         SizedBox(
                           height: 3.h,
                         ),

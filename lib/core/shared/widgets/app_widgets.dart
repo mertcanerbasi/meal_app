@@ -1,6 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:meal_app/core/data/models/meal_model/meal_model.dart';
 import 'package:meal_app/core/shared/theme/app_colors.dart';
+import 'package:meal_app/core/shared/utils/utils.dart';
+import 'package:meal_app/presentation/pages/meal_details_page/meal_details_page.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class BuildHeader extends StatelessWidget {
@@ -92,6 +97,7 @@ class DefaultTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType type;
   final bool isPassword;
+  final bool? isEnabled;
   const DefaultTextFormField({
     Key? key,
     required this.context,
@@ -99,6 +105,7 @@ class DefaultTextFormField extends StatelessWidget {
     required this.validator,
     required this.controller,
     required this.type,
+    this.isEnabled = true,
     this.isPassword = false,
   }) : super(key: key);
 
@@ -109,6 +116,7 @@ class DefaultTextFormField extends StatelessWidget {
       controller: controller,
       keyboardType: type,
       obscureText: isPassword,
+      enabled: isEnabled,
       cursorColor: AppColors.mainColor,
       decoration: InputDecoration(
         hintText: hintText,
@@ -119,6 +127,12 @@ class DefaultTextFormField extends StatelessWidget {
           ),
         ),
         enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(
+            color: AppColors.textFieldColor,
+          ),
+        ),
+        disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(
             color: AppColors.textFieldColor,
@@ -284,4 +298,124 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
+class FoodSuggestionItemWidget extends StatelessWidget {
+  final MealModel mealModel;
+  const FoodSuggestionItemWidget({super.key, required this.mealModel});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        navigateTo(context, MealDetailsPage(mealModel: mealModel),
+            isFullScreen: true);
+      },
+      child: Container(
+        height: 25.h,
+        clipBehavior: Clip.hardEdge,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.sp),
+        ),
+        child: Stack(
+          children: [
+            CachedNetworkImage(
+              width: 100.w,
+              height: 25.h,
+              fit: BoxFit.cover,
+              imageUrl: mealModel.image,
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
+            Padding(
+              padding: EdgeInsets.all(2.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(10.sp),
+                        decoration: BoxDecoration(
+                          color: AppColors.mainColor.shade500,
+                          borderRadius: BorderRadius.circular(10.sp),
+                        ),
+                        child: Text(
+                          "Mertcan Erbaşı",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.sp,
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                      Container(
+                        padding: EdgeInsets.all(10.sp),
+                        decoration: BoxDecoration(
+                          color: AppColors.mainColor.shade500,
+                          borderRadius: BorderRadius.circular(10.sp),
+                        ),
+                        child: Text(
+                          "${mealModel.likes.toString()} Likes",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.sp,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(10.sp),
+                        decoration: BoxDecoration(
+                          color: AppColors.mainColor.shade500,
+                          borderRadius: BorderRadius.circular(10.sp),
+                        ),
+                        child: Text(
+                          mealModel.name,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(height: 1.h),
+                      Container(
+                        padding: EdgeInsets.all(10.sp),
+                        decoration: BoxDecoration(
+                          color: AppColors.mainColor.shade500,
+                          borderRadius: BorderRadius.circular(10.sp),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            FaIcon(
+                              FontAwesomeIcons.clock,
+                              color: Colors.white,
+                              size: 16.sp,
+                            ),
+                            SizedBox(width: 2.w),
+                            Text(
+                              "${mealModel.minutes} min",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.sp,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

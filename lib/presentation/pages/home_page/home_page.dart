@@ -1,18 +1,15 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:meal_app/core/cubits/home_cubit/home_cubit.dart';
 import 'package:meal_app/core/cubits/home_cubit/home_states.dart';
-import 'package:meal_app/core/data/models/meal_model/meal_model.dart';
 import 'package:meal_app/core/data/models/meal_type_model/meal_type_model.dart';
 import 'package:meal_app/core/shared/theme/app_colors.dart';
 import 'package:meal_app/core/shared/utils/utils.dart';
 import 'package:meal_app/core/shared/widgets/app_widgets.dart';
-import 'package:meal_app/presentation/pages/meal_details_page/meal_details_page.dart';
 import 'package:meal_app/presentation/pages/profile_page/profile_page.dart';
+import 'package:meal_app/presentation/pages/search_page/search_page.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class HomePage extends StatelessWidget {
@@ -43,12 +40,22 @@ class HomePage extends StatelessWidget {
                   children: [
                     const WelcomeHomeWidget(),
                     SizedBox(height: 2.h),
-                    DefaultTextFormField(
-                        context: context,
-                        hintText: "Search",
-                        validator: null,
-                        controller: controller,
-                        type: TextInputType.name),
+                    GestureDetector(
+                      onTap: () {
+                        cubit.googleAds.disposeBannerAd();
+                        navigateTo(context, SearchPage(), isFullScreen: true)
+                            .then((value) {
+                          cubit.googleAds.loadBannerAd();
+                        });
+                      },
+                      child: DefaultTextFormField(
+                          context: context,
+                          isEnabled: false,
+                          hintText: "Find some delicious recipes",
+                          validator: null,
+                          controller: controller,
+                          type: TextInputType.name),
+                    ),
                     SizedBox(height: 2.h),
                     BannerAdWidget(
                       bannerAd: cubit.googleAds.bannerAd,
@@ -192,126 +199,6 @@ class HorizontalChipListWidget extends StatelessWidget {
                 width: 2.w,
               ),
           itemCount: mealTypesList.length),
-    );
-  }
-}
-
-class FoodSuggestionItemWidget extends StatelessWidget {
-  final MealModel mealModel;
-  const FoodSuggestionItemWidget({super.key, required this.mealModel});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        navigateTo(context, MealDetailsPage(mealModel: mealModel),
-            isFullScreen: true);
-      },
-      child: Container(
-        height: 25.h,
-        clipBehavior: Clip.hardEdge,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.sp),
-        ),
-        child: Stack(
-          children: [
-            CachedNetworkImage(
-              width: 100.w,
-              height: 25.h,
-              fit: BoxFit.cover,
-              imageUrl: mealModel.image,
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-            ),
-            Padding(
-              padding: EdgeInsets.all(2.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(10.sp),
-                        decoration: BoxDecoration(
-                          color: AppColors.mainColor.shade500,
-                          borderRadius: BorderRadius.circular(10.sp),
-                        ),
-                        child: Text(
-                          "Mertcan Erbaşı",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.sp,
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      Container(
-                        padding: EdgeInsets.all(10.sp),
-                        decoration: BoxDecoration(
-                          color: AppColors.mainColor.shade500,
-                          borderRadius: BorderRadius.circular(10.sp),
-                        ),
-                        child: Text(
-                          "${mealModel.likes.toString()} Likes",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.sp,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(10.sp),
-                        decoration: BoxDecoration(
-                          color: AppColors.mainColor.shade500,
-                          borderRadius: BorderRadius.circular(10.sp),
-                        ),
-                        child: Text(
-                          mealModel.name,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      SizedBox(height: 1.h),
-                      Container(
-                        padding: EdgeInsets.all(10.sp),
-                        decoration: BoxDecoration(
-                          color: AppColors.mainColor.shade500,
-                          borderRadius: BorderRadius.circular(10.sp),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            FaIcon(
-                              FontAwesomeIcons.clock,
-                              color: Colors.white,
-                              size: 16.sp,
-                            ),
-                            SizedBox(width: 2.w),
-                            Text(
-                              "${mealModel.minutes} min",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16.sp,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
