@@ -3,23 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>941729005693-fug85b14o5jck0p90qktu9grdr4ftkq3.apps.googleusercontent.com</string>
+	<string>75820450814-607hsrb3n5coa06j8k81una616tlisqc.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.941729005693-fug85b14o5jck0p90qktu9grdr4ftkq3</string>
+	<string>com.googleusercontent.apps.75820450814-607hsrb3n5coa06j8k81una616tlisqc</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>941729005693-2pcf86f78u9ra64as74g26na6i5hhpb3.apps.googleusercontent.com</string>
+	<string>75820450814-ohgfdt7jon8qhpi55oe9vtme9dcls2tl.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyB6J5JuEbBnv_WbYkCet2xSZBH4I1FNtUk</string>
+	<string>AIzaSyBRcZI4hdRRVHZFWmTDl012Zj5gTwgJkqY</string>
 	<key>GCM_SENDER_ID</key>
-	<string>941729005693</string>
+	<string>75820450814</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.mealApp</string>
+	<string>com.rython.eatit</string>
 	<key>PROJECT_ID</key>
-	<string>mealapp-82019</string>
+	<string>eatit-2dee5</string>
 	<key>STORAGE_BUCKET</key>
-	<string>mealapp-82019.appspot.com</string>
+	<string>eatit-2dee5.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:941729005693:ios:cef8f3d86715689a0bb114</string>
+	<string>1:75820450814:ios:238699d252b70af80d36af</string>
 </dict>
 </plist>

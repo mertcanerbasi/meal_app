@@ -1,4 +1,4 @@
-package com.example.meal_app
+package com.rython.eatit
 
 import io.flutter.embedding.android.FlutterActivity
 

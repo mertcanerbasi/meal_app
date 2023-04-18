@@ -1,45 +1,37 @@
 {
   "project_info": {
-    "project_number": "941729005693",
-    "project_id": "mealapp-82019",
-    "storage_bucket": "mealapp-82019.appspot.com"
+    "project_number": "75820450814",
+    "project_id": "eatit-2dee5",
+    "storage_bucket": "eatit-2dee5.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:941729005693:android:8e27f992cdb58ab50bb114",
+        "mobilesdk_app_id": "1:75820450814:android:ca2eae95264ccd800d36af",
         "android_client_info": {
-          "package_name": "com.example.meal_app"
+          "package_name": "com.rython.eatit"
         }
       },
       "oauth_client": [
         {
-          "client_id": "941729005693-2pcf86f78u9ra64as74g26na6i5hhpb3.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.meal_app",
-            "certificate_hash": "1384fbffab1829a815cba605ad62b0560b652543"
-          }
-        },
-        {
-          "client_id": "941729005693-qs5a8s2fkh4n22tj4ud7bqh8qpdntqic.apps.googleusercontent.com",
+          "client_id": "75820450814-7btlfa1hkn10em8520570ke64t3119g8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD_TnSSxmsgkDGFSq1CUczJGi2Z7K_b4rg"
+          "current_key": "AIzaSyCFyya2ClMTCOoIJj8Dc99PoPNnKAQHnUc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "941729005693-qs5a8s2fkh4n22tj4ud7bqh8qpdntqic.apps.googleusercontent.com",
+              "client_id": "75820450814-7ai6nk8tahfse4l3eh83r4635h0il818.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "941729005693-fug85b14o5jck0p90qktu9grdr4ftkq3.apps.googleusercontent.com",
+              "client_id": "75820450814-d1j0rv6mmhrg4c9ua232f42he6pd4m7b.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.example.mealApp"

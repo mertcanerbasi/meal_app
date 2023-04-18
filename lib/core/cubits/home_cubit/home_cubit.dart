@@ -9,8 +9,8 @@ class HomeCubit extends Cubit<HomeStates> {
   HomeCubit() : super(HomeInitialState());
   static HomeCubit get(context) => BlocProvider.of(context);
   List<MealTypeModel> mealTypesList = [
-    MealTypeModel(label: MealType.breakfast.name, isSelected: false),
-    MealTypeModel(label: MealType.lunch.name, isSelected: true),
+    MealTypeModel(label: MealType.breakfast.name, isSelected: true),
+    MealTypeModel(label: MealType.lunch.name, isSelected: false),
     MealTypeModel(label: MealType.snacks.name, isSelected: false),
     MealTypeModel(label: MealType.dinner.name, isSelected: false),
   ];
@@ -18,7 +18,7 @@ class HomeCubit extends Cubit<HomeStates> {
   GoogleAds googleAds = GoogleAds();
 
   List<MealModel> mealsList = [];
-  MealType currentMealType = MealType.lunch;
+  MealType currentMealType = MealType.breakfast;
 
   List<MealModel> get currentMealsList => mealsList
       .where((element) => element.mealTypes == currentMealType.name)

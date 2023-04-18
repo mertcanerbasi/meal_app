@@ -55,7 +55,7 @@ class LoginCubit extends Cubit<LoginStates> {
     emit(SignInGoogleLoadingsState());
     final GoogleSignInAccount? googleUser = await GoogleSignIn(
             clientId:
-                "941729005693-fug85b14o5jck0p90qktu9grdr4ftkq3.apps.googleusercontent.com")
+                "75820450814-607hsrb3n5coa06j8k81una616tlisqc.apps.googleusercontent.com")
         .signIn();
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
